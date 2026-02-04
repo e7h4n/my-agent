@@ -28,4 +28,10 @@ jobs:
         env:
           VM0_TOKEN: ${{ secrets.VM0_TOKEN }}
           NODE_OPTIONS: "--no-deprecation"
-        run: vm0 compose vm0-minimal.yaml
+        run: |
+          # Debug: check if token has special chars
+          echo "Token length: ${#VM0_TOKEN}"
+          # Try with explicit encoding
+          export LANG=en_US.UTF-8
+          export LC_ALL=en_US.UTF-8
+          vm0 compose vm0-minimal.yaml
