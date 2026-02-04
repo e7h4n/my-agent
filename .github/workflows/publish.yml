@@ -16,9 +16,16 @@ jobs:
           node-version: "22"
 
       - name: Install VM0 CLI
-        run: npm install -g @vm0/cli@9.14.0
+        run: npm install -g @vm0/cli
+
+      - name: Debug Info
+        run: |
+          echo "Node version: $(node --version)"
+          echo "CLI version: $(vm0 --version)"
+          cat vm0-minimal.yaml
 
       - name: Publish VM0 Agent
         env:
           VM0_TOKEN: ${{ secrets.VM0_TOKEN }}
-        run: vm0 compose vm0.yaml
+          NODE_OPTIONS: "--no-deprecation"
+        run: vm0 compose vm0-minimal.yaml

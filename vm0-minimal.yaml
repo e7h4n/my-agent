@@ -1,0 +1,6 @@
+version: "1.0"
+
+agents:
+  test-agent:
+    framework: claude-code
+    instructions: AGENTS.md
