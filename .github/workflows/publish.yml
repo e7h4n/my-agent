@@ -10,14 +10,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Publish VM0 Agent
-        id: publish
-        uses: vm0-ai/compose-action@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          vm0-token: ${{ secrets.VM0_TOKEN }}
+          node-version: "22"
 
-      - name: Print Results
-        run: |
-          echo "Agent: ${{ steps.publish.outputs.name }}"
-          echo "Version: ${{ steps.publish.outputs.version-id }}"
-          echo "Action: ${{ steps.publish.outputs.action }}"
+      - name: Install VM0 CLI
+        run: npm install -g @vm0/cli
+
+      - name: Publish VM0 Agent
+        env:
+          VM0_TOKEN: ${{ secrets.VM0_TOKEN }}
+        run: vm0 compose vm0.yaml
