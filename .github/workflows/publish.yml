@@ -1,0 +1,23 @@
+name: Publish Agent
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Publish VM0 Agent
+        id: publish
+        uses: vm0-ai/compose-action@v1
+        with:
+          vm0-token: ${{ secrets.VM0_TOKEN }}
+
+      - name: Print Results
+        run: |
+          echo "Agent: ${{ steps.publish.outputs.name }}"
+          echo "Version: ${{ steps.publish.outputs.version-id }}"
+          echo "Action: ${{ steps.publish.outputs.action }}"
