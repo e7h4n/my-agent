@@ -1,0 +1,13 @@
+version: "1.0"
+
+agents:
+  deep-dive:
+    framework: claude-code
+    apps:
+      - github
+    instructions: AGENTS.md
+    skills:
+      - https://github.com/vm0-ai/vm0-skills/tree/main/github
+      - https://github.com/vm0-ai/vm0-skills/tree/main/vm0-agent
+      - https://github.com/vm0-ai/vm0-skills/tree/main/vm0-cli
+      - https://github.com/vm0-ai/vm0-skills/tree/main/vm0
