@@ -16,7 +16,7 @@ jobs:
           node-version: "22"
 
       - name: Install VM0 CLI
-        run: npm install -g @vm0/cli
+        run: npm install -g @vm0/cli@9.14.0
 
       - name: Publish VM0 Agent
         env:
