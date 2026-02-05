@@ -18,20 +18,8 @@ jobs:
       - name: Install VM0 CLI
         run: npm install -g @vm0/cli
 
-      - name: Debug Info
-        run: |
-          echo "Node version: $(node --version)"
-          echo "CLI version: $(vm0 --version)"
-          cat vm0-minimal.yaml
-
       - name: Publish VM0 Agent
         env:
           VM0_TOKEN: ${{ secrets.VM0_TOKEN }}
-          NODE_OPTIONS: "--no-deprecation"
         run: |
-          # Debug: check if token has special chars
-          echo "Token length: ${#VM0_TOKEN}"
-          # Try with explicit encoding
-          export LANG=en_US.UTF-8
-          export LC_ALL=en_US.UTF-8
-          vm0 compose vm0-minimal.yaml
+          vm0 compose -y vm0.yaml
