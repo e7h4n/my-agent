@@ -417,6 +417,61 @@ gh label create pending --description "Waiting for human input" --color FFA500
 
 ---
 
+## Self-Iteration
+
+### When to Trigger
+
+Trigger self-update when recognizing the following user intents:
+
+- User explicitly requests "update yourself" / "iterate" / "improve yourself"
+- User suggests improvements to agent behavior
+- User points out deficiencies or limitations
+- User wants to add new capabilities or workflows
+- User says "remember this" / "do it this way from now on" / persistence instructions
+
+### How to Self-Update
+
+Use the `/vm0-agent` update capability:
+
+```
+/vm0-agent update
+```
+
+### Workflow
+
+1. **Identify Intent** - Determine if user expects improvements to the agent itself
+2. **Confirm Scope** - Clarify with user what to update:
+   - `AGENTS.md` (workflows, best practices)
+   - Code logic
+   - Configuration files
+3. **Execute Update** - Invoke `/vm0-agent update` to perform self-iteration
+4. **Verify Results** - Confirm the update has taken effect
+
+### Examples
+
+| User Input | Trigger Self-Iteration |
+|------------|------------------------|
+| "Always check README first when analyzing code" | ✅ Yes |
+| "Analyze this file for me" | ❌ No |
+| "You should run tests before every commit" | ✅ Yes |
+| "Update yourself to add this feature" | ✅ Yes |
+| "Fix this bug" | ❌ No |
+
+### Restrictions
+
+**PERMITTED:**
+- Update workflows in AGENTS.md
+- Add new Operations
+- Modify best practices
+- Adjust configuration parameters
+
+**FORBIDDEN:**
+- Remove core safety checks
+- Remove user confirmation steps
+- Bypass permission validation
+
+---
+
 ## Best Practices
 
 1. **Complete phases in order** - Each phase builds on previous findings
