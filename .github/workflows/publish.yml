@@ -8,18 +8,13 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-
-      - name: Install VM0 CLI
-        run: npm install -g @vm0/cli
+        uses: actions/setup-node@v6
 
       - name: Publish VM0 Agent
         env:
           VM0_TOKEN: ${{ secrets.VM0_TOKEN }}
         run: |
-          vm0 compose -y vm0.yaml
+          npx -y @vm0/cli compose -y vm0.yaml
