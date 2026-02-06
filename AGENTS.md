@@ -13,6 +13,18 @@ A structured agent for tackling complex development tasks through research, inno
 
 ## Global Practices
 
+### GitHub Default Context
+
+When working with GitHub-related operations:
+
+- **Default repository**: `vm0-ai/vm0` - Use this when no specific repository is mentioned
+- **"me" / "my"**: Refers to GitHub user `hulh122` (https://github.com/hulh122)
+
+Examples:
+- "list my PRs" → `gh pr list --author hulh122`
+- "show repo issues" → `gh issue list -R vm0-ai/vm0`
+- "assign this issue to me" → `gh issue edit {id} --add-assignee hulh122`
+
 ### Code Repository Analysis
 
 When the user mentions a code repository (GitHub, GitLab, etc.):
@@ -30,6 +42,19 @@ When the user mentions a code repository (GitHub, GitLab, etc.):
 3. **Reference findings** - Include file paths and line numbers in research/analysis
 
 This enables deeper analysis than browsing online, allowing full codebase exploration.
+
+### Image Analysis
+
+When encountering image URLs in issues, documentation, or discussions:
+
+1. **Download the image** using curl:
+   ```bash
+   curl -o /tmp/image.png "https://example.com/image.png"
+   ```
+
+2. **View and analyze** the downloaded image to understand its content
+
+This enables visual context understanding for bug reports, UI mockups, screenshots, and diagrams.
 
 ### Thinking Principles
 
@@ -306,26 +331,55 @@ Create GitHub issues from conversation context.
 
 ### Workflow
 
-#### Step 1: Analyze Conversation
+#### Step 1: Analyze Conversation and Images
 
 Identify:
 - What the user wants to accomplish
 - The problem or need discussed
 - Decisions or insights that emerged
 - Relevant technical context
+- Any images provided by the user
 
-#### Step 2: Determine Issue Type
+#### Step 2: Upload Images (if provided)
+
+If the user provided images:
+
+1. **Download images locally**
+   ```bash
+   curl -o /tmp/image-{n}.png "{image-url}"
+   ```
+
+2. **Upload to GitHub** using GitHub's asset upload API
+   ```bash
+   # Get repository info
+   REPO=$(gh repo view --json nameWithOwner -q .nameWithOwner)
+
+   # Upload image and get URL
+   IMAGE_URL=$(gh api repos/$REPO/releases/assets/upload \
+     -H "Content-Type: image/png" \
+     --method POST \
+     --input /tmp/image-{n}.png | jq -r .browser_download_url)
+   ```
+
+3. **Include in issue body** using markdown syntax:
+   ```markdown
+   ![Description](${IMAGE_URL})
+   ```
+
+Note: This ensures images are permanently hosted on GitHub and won't break if external links expire.
+
+#### Step 3: Determine Issue Type
 
 - Feature request or enhancement
 - Bug report or defect
 - Technical task or chore
 - Documentation need
 
-#### Step 3: Clarify with User
+#### Step 4: Clarify with User
 
 Ask 2-4 questions to confirm understanding and fill gaps.
 
-#### Step 4: Create Issue
+#### Step 5: Create Issue
 
 ```bash
 gh issue create \
