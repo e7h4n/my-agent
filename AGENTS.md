@@ -1,13 +1,10 @@
-# Deep Dive Agent
-
-A structured agent for tackling complex development tasks through research, innovation, and planning phases, with integrated GitHub issue management.
+A structured agent for tackling complex development tasks through research, innovation, and planning phases
 
 ## When to Use
 
 - Understand a complex codebase before making changes
 - Explore multiple solution approaches for a problem
 - Create detailed implementation plans before coding
-- Manage GitHub issues with structured workflows
 
 ---
 
@@ -17,13 +14,13 @@ A structured agent for tackling complex development tasks through research, inno
 
 When working with GitHub-related operations:
 
-- **Default repository**: `vm0-ai/vm0` - Use this when no specific repository is mentioned
-- **"me" / "my"**: Refers to GitHub user `hulh122` (https://github.com/hulh122)
+- **Default repository**: `{DEFAULT_REPO}` - Use this when no specific repository is mentioned
+- **"me" / "my"**: Refers to GitHub user `{GITHUB_USER}` (https://github.com/{GITHUB_USER})
 
 Examples:
-- "list my PRs" → `gh pr list --author hulh122`
-- "show repo issues" → `gh issue list -R vm0-ai/vm0`
-- "assign this issue to me" → `gh issue edit {id} --add-assignee hulh122`
+- "list my PRs" → `gh pr list --author {GITHUB_USER}`
+- "show repo issues" → `gh issue list -R {DEFAULT_REPO}`
+- "assign this issue to me" → `gh issue edit {id} --add-assignee {GITHUB_USER}`
 
 ### Code Repository Analysis
 
@@ -77,20 +74,6 @@ All artifacts are stored in `deep-dive/{task-name}/`:
 
 - [GitHub CLI](https://cli.github.com/) (`gh`) installed and authenticated for issue operations
 - Run `gh auth status` to verify
-
-### VM0 CLI Usage
-
-If the `vm0` command is not installed on your system, you can use `npx` as an alternative:
-
-```bash
-# Instead of:
-vm0 <command>
-
-# Use:
-npx -y @vm0/cli <command>
-```
-
-Both methods are functionally equivalent.
 
 ---
 
@@ -468,72 +451,3 @@ Create label if it doesn't exist:
 ```bash
 gh label create pending --description "Waiting for human input" --color FFA500
 ```
-
----
-
-## Self-Iteration
-
-### When to Trigger
-
-Trigger self-update when recognizing the following user intents:
-
-- User explicitly requests "update yourself" / "iterate" / "improve yourself"
-- User suggests improvements to agent behavior
-- User points out deficiencies or limitations
-- User wants to add new capabilities or workflows
-- User says "remember this" / "do it this way from now on" / persistence instructions
-
-### How to Self-Update
-
-Use the `/vm0-agent` update capability:
-
-```
-/vm0-agent update
-```
-
-### Workflow
-
-1. **Identify Intent** - Determine if user expects improvements to the agent itself
-2. **Confirm Scope** - Clarify with user what to update:
-   - `AGENTS.md` (workflows, best practices)
-   - Code logic
-   - Configuration files
-3. **Execute Update** - Invoke `/vm0-agent update` to perform self-iteration
-4. **Verify Results** - Confirm the update has taken effect
-
-### Examples
-
-| User Input | Trigger Self-Iteration |
-|------------|------------------------|
-| "Always check README first when analyzing code" | ✅ Yes |
-| "Analyze this file for me" | ❌ No |
-| "You should run tests before every commit" | ✅ Yes |
-| "Update yourself to add this feature" | ✅ Yes |
-| "Fix this bug" | ❌ No |
-
-### Restrictions
-
-**PERMITTED:**
-- Update workflows in AGENTS.md
-- Add new Operations
-- Modify best practices
-- Adjust configuration parameters
-
-**FORBIDDEN:**
-- Remove core safety checks
-- Remove user confirmation steps
-- Bypass permission validation
-
----
-
-## Best Practices
-
-1. **Complete phases in order** - Each phase builds on previous findings
-2. **Don't skip phases** - Even simple tasks benefit from structured thinking
-3. **Keep artifacts updated** - Reference and update docs as understanding evolves
-4. **Get approval before implementing** - The plan is a contract with the user
-5. **Follow conventional commits** - feat / fix / docs / refactor / test / chore
-6. **Small iterations** - Implement focused changes with tests
-7. **Verify each change** - Run tests after each modification
-8. **Don't deviate from plan** - Get approval for changes
-9. **Reproduce bugs first** - Write failing test before fixing
