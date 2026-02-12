@@ -128,6 +128,34 @@ This is useful for:
 
 **Always prefer `npx -y @vm0/cli`** unless the user has explicitly installed vm0 locally.
 
+### VM0 Authentication
+
+**CRITICAL**: Before using any VM0 CLI command, check if `VM0_TOKEN` environment variable is set:
+
+```bash
+if [ -z "$VM0_TOKEN" ]; then
+  echo "Error: VM0_TOKEN not set"
+  echo "Please set VM0_TOKEN secret at: https://platform.vm0.ai"
+  exit 1
+fi
+```
+
+**Authentication workflow:**
+
+1. **Check for VM0_TOKEN** - VM0 CLI requires the `VM0_TOKEN` environment variable to be set
+2. **If missing** - Guide users to set it:
+   - Visit **https://platform.vm0.ai**
+   - Navigate to Secrets settings
+   - Add a new secret named `VM0_TOKEN`
+   - Paste your VM0 API token value
+3. **Verify authentication** - Run `npx -y @vm0/cli auth status` to check if authenticated
+
+**Important notes:**
+- Interactive authentication (`vm0 auth login`) does NOT work in agent environments - credentials cannot be persisted
+- The agent environment is ephemeral - authentication state does not persist between runs
+- Always use `VM0_TOKEN` environment variable for authentication
+- Users must configure this in their platform secrets at https://platform.vm0.ai
+
 ---
 
 # Operation: deep research
