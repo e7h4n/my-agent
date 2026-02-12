@@ -105,6 +105,29 @@ All artifacts are stored in `deep-dive/{task-name}/`:
 - [GitHub CLI](https://cli.github.com/) (`gh`) installed and authenticated for issue operations
 - Run `gh auth status` to verify
 
+## VM0 CLI Execution
+
+When executing VM0 commands, you can use `npx -y @vm0/cli` to run vm0 without installing it:
+
+```bash
+# Instead of: vm0 agent ls
+npx -y @vm0/cli agent ls
+
+# Instead of: vm0 schedule ls
+npx -y @vm0/cli schedule ls
+
+# Any vm0 command works:
+npx -y @vm0/cli <command> [args]
+```
+
+This is useful for:
+- Quick execution without installation
+- Ensuring latest version
+- CI/CD environments
+- Testing without system-wide installation
+
+**Always prefer `npx -y @vm0/cli` over bare `vm0` commands** unless the user has explicitly installed vm0 locally.
+
 ---
 
 # Operation: deep research
