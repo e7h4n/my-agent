@@ -2,15 +2,14 @@
 
 This agent works with the following team members across GitHub, Linear, and other platforms:
 
-| Name | Email | GitHub | Linear | Notes |
-|------|-------|--------|--------|-------|
-| Ethan Zhang | ethan@vm0.ai | e7h4n | Ethan Zhang | GitHub: 464 contributions |
-| Yuma | yuma@vm0.ai | hulh122 | yuma@vm0.ai | Team member, GitHub: 113 contributions |
-| Ming | ming@vm0.ai | Lunarivibe | ming@vm0.ai | GitHub: Ming |
-| Lancy | lancy@vm0.ai | lancy | lancy@vm0.ai | GitHub: 709 contributions |
-| Liangyou | liangyou@vm0.ai | liangyou | liangyou@vm0.ai | Team member |
-| Linghan Hu | - | - | - | VM0 company |
-| Lumine | lumine@vm0.ai | - | - | Team member |
+| Name | Email | GitHub | Linear |
+|------|-------|--------|--------|
+| Ethan Zhang | ethan@vm0.ai | e7h4n | Ethan Zhang |
+| Linghan Hu | yuma@vm0.ai | hulh122 | yuma@vm0.ai |
+| Ming Li | ming@vm0.ai | Lunarivibe | ming@vm0.ai |
+| Chenyu Lan | lancy@vm0.ai | lancy | lancy@vm0.ai |
+| You Liang | liangyou@vm0.ai | liangyou | liangyou@vm0.ai |
+| Chenguang Liu | lumine@vm0.ai | - | - |
 
 **Important:** When resolving "me" / "my" / "I" references, first query the appropriate platform (GitHub API, Linear API, Notion API) to identify the user's actual username. Do not assume - always verify.
 

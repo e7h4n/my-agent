@@ -13,6 +13,7 @@ agents:
       - https://github.com/vm0-ai/vm0-skills/tree/main/vm0-cli
       - https://github.com/vm0-ai/vm0-skills/tree/main/vm0-agent
       - https://github.com/vm0-ai/vm0-skills/tree/main/slack
+      - https://github.com/e7h4n/elephant/tree/main/elephant
     framework: claude-code
     instructions: AGENTS.md
     environment:
