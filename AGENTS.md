@@ -1,28 +1,47 @@
-A structured agent for tackling complex development tasks through research, innovation, and planning phases
+A structured agent as a assistant
 
-## When to Use
+* /tmp directory does not persist between sessions. Write to the current directory for persistent data.
+* GitHub operations use the `github` skill (`gh` CLI). Linear operations use the `linear` skill.
+* All persistent content must be written in English, including issues, PRs, code, comments, commits, emails, and documentation.
+* Avoid markdown tables for data output — they render poorly in Slack. Use Slack-friendly markdown (bold, lists, code blocks) instead.
 
-- Understand a complex codebase before making changes
-- Explore multiple solution approaches for a problem
-- Create detailed implementation plans before coding
+# External References
 
----
+Use shorthand prefixes to reference external issues in any operation:
 
-## Global Practices
+| Prefix | Platform | Example | Resolved to |
+|--------|----------|---------|-------------|
+| `#` | GitHub | `#123` | GitHub issue #123 in the default repo |
+| `~` | Linear | `~ENG-42` | Linear issue ENG-42 |
 
-### GitHub Default Context
+When a reference is detected in the task description:
+
+1. **Fetch context** — Retrieve the issue title, description, comments, and labels
+2. **Include in research** — Treat fetched content as part of the task context
+3. **Link artifacts** — Reference the source issue in generated documents
+
+Usage examples:
+
+```
+deep research ~ENG-42 authentication flow
+deep research #123 refactor login module
+issue plan #123
+```
+
+# GitHub Default Context
 
 When working with GitHub-related operations:
 
-- **Default repository**: `{DEFAULT_REPO}` - Use this when no specific repository is mentioned
+- **Default GitHub repository**: `vm0-ai/vm0` — Use this when no specific repository is mentioned
+- **Default Linear project**: `vm0`
 - **"me" / "my"**: Refers to GitHub user `{GITHUB_USER}` (https://github.com/{GITHUB_USER})
 
 Examples:
-- "list my PRs" → `gh pr list --author {GITHUB_USER}`
-- "show repo issues" → `gh issue list -R {DEFAULT_REPO}`
-- "assign this issue to me" → `gh issue edit {id} --add-assignee {GITHUB_USER}`
+- "list my PRs" → `gh pr list -R vm0-ai/vm0 --author {GITHUB_USER}`
+- "show repo issues" → `gh issue list -R vm0-ai/vm0`
+- "assign this issue to me" → `gh issue edit {id} -R vm0-ai/vm0 --add-assignee {GITHUB_USER}`
 
-### Code Repository Analysis
+## Code Repository Analysis
 
 When the user mentions a code repository (GitHub, GitLab, etc.):
 
@@ -40,7 +59,7 @@ When the user mentions a code repository (GitHub, GitLab, etc.):
 
 This enables deeper analysis than browsing online, allowing full codebase exploration.
 
-### Image Analysis
+## Image Analysis
 
 When encountering image URLs in issues, documentation, or discussions:
 
@@ -53,14 +72,7 @@ When encountering image URLs in issues, documentation, or discussions:
 
 This enables visual context understanding for bug reports, UI mockups, screenshots, and diagrams.
 
-### Thinking Principles
-
-- **Systems Thinking** - Analyze from architecture to implementation
-- **Dialectical Thinking** - Understand multiple aspects and trade-offs
-- **Critical Thinking** - Verify understanding from multiple angles
-- **Mapping** - Separate known from unknown elements
-
-### Artifact Storage
+## Artifact Storage
 
 All artifacts are stored in `deep-dive/{task-name}/`:
 
@@ -70,20 +82,20 @@ All artifacts are stored in `deep-dive/{task-name}/`:
 | `innovate.md` | Innovate | Solution approaches, trade-offs |
 | `plan.md` | Plan | Implementation steps, task breakdown |
 
-### Prerequisites
+## Prerequisites
 
 - [GitHub CLI](https://cli.github.com/) (`gh`) installed and authenticated for issue operations
 - Run `gh auth status` to verify
 
 ---
 
-## Operation /deep-research
+# Operation: deep research
 
-**Usage:** `/deep-research [task description]`
+**Usage:** `deep research [task description]`
 
 Information gathering phase. Analyze the codebase without suggesting solutions.
 
-### Restrictions
+## Restrictions
 
 **PERMITTED:**
 - Reading files and code
@@ -98,7 +110,7 @@ Information gathering phase. Analyze the codebase without suggesting solutions.
 - Planning or roadmaps
 - Any hint of action
 
-### Workflow
+## Workflow
 
 1. **Clarification** - Ask questions to understand the scope
 2. **Research** - Systematically analyze relevant code
@@ -107,17 +119,17 @@ Information gathering phase. Analyze the codebase without suggesting solutions.
 
 ---
 
-## Operation /deep-innovate
+# Operation: deep innovate
 
-**Usage:** `/deep-innovate [task description]`
+**Usage:** `deep innovate [task description]`
 
 Creative brainstorming phase. Explore multiple approaches based on research findings.
 
-### Prerequisites
+## Prerequisites
 
 Research document must exist at `deep-dive/{task-name}/research.md`
 
-### Restrictions
+## Restrictions
 
 **PERMITTED:**
 - Discussing multiple solution ideas
@@ -132,7 +144,7 @@ Research document must exist at `deep-dive/{task-name}/research.md`
 - Committing to a single solution
 - File-by-file change specifications
 
-### Workflow
+## Workflow
 
 1. **Review** - Read research document, summarize key findings
 2. **Exploration** - Generate 2-3 distinct solution approaches
@@ -140,7 +152,7 @@ Research document must exist at `deep-dive/{task-name}/research.md`
 4. **Documentation** - Create `deep-dive/{task-name}/innovate.md`
 5. **Discussion** - Present approaches, gather user feedback
 
-### For Each Approach Document
+## For Each Approach Document
 
 - Core concept and philosophy
 - Key advantages
@@ -150,19 +162,19 @@ Research document must exist at `deep-dive/{task-name}/research.md`
 
 ---
 
-## Operation /deep-plan
+# Operation: deep plan
 
-**Usage:** `/deep-plan [task description]`
+**Usage:** `deep plan [task description]`
 
 Transform research and innovation into a concrete implementation plan.
 
-### Prerequisites
+## Prerequisites
 
 Both documents must exist:
 - `deep-dive/{task-name}/research.md`
 - `deep-dive/{task-name}/innovate.md`
 
-### Restrictions
+## Restrictions
 
 **PERMITTED:**
 - Creating detailed implementation steps
@@ -177,7 +189,7 @@ Both documents must exist:
 - Running tests or build commands
 - Any implementation execution
 
-### Workflow
+## Workflow
 
 1. **Context Review** - Read research and innovate documents
 2. **Task Breakdown** - Identify discrete work items, order by dependency
@@ -186,7 +198,7 @@ Both documents must exist:
 5. **Documentation** - Create `deep-dive/{task-name}/plan.md`
 6. **Approval** - Present plan, get explicit approval before implementation
 
-### Plan Document Structure
+## Plan Document Structure
 
 - Chosen approach summary
 - Task breakdown with details
@@ -197,28 +209,30 @@ Both documents must exist:
 
 ---
 
-## Operation /issue-plan
+# Operation: issue plan
 
-**Usage:** `/issue-plan [issue-id]`
+**Usage:** `issue plan [issue-id]`
 
-Start working on a GitHub issue by executing the complete deep-dive workflow.
+Start working on an issue by executing the complete deep-dive workflow.
 
-### Workflow
+> **Platform routing:** Use `#` for GitHub issues, `~` for Linear issues. GitHub issues are managed via the `github` skill (`gh` CLI), Linear issues via the `linear` skill.
 
-#### Step 1: Fetch Issue Details
+## Workflow
+
+### Step 1: Fetch Issue Details
 
 ```bash
 gh issue view {issue-id} --json title,body,comments,labels
 ```
 
-#### Step 2: Check for Existing Artifacts
+### Step 2: Check for Existing Artifacts
 
 Look for existing work in `deep-dive/*/`:
 - `research.md` - Research phase completed
 - `innovate.md` - Innovation phase completed
 - `plan.md` - Plan phase completed
 
-#### Step 3: Execute Deep-Dive Workflow
+### Step 3: Execute Deep-Dive Workflow
 
 Run phases automatically in sequence (no user confirmation between phases):
 
@@ -226,12 +240,12 @@ Run phases automatically in sequence (no user confirmation between phases):
 2. **Innovate Phase** - Explore solutions, create `innovate.md`, post to issue
 3. **Plan Phase** - Create implementation plan, create `plan.md`, post to issue
 
-#### Step 4: Finalize
+### Step 4: Finalize
 
 1. Add "pending" label to wait for user approval
 2. Exit and wait for user to review the plan
 
-### Posting to Issue
+## Posting to Issue
 
 After each phase, post the artifact as a comment:
 
@@ -243,45 +257,47 @@ gh issue comment {issue-id} --body-file deep-dive/{task-name}/plan.md
 
 ---
 
-## Operation /issue-action
+# Operation: issue action
 
-**Usage:** `/issue-action`
+**Usage:** `issue action`
 
-Continue working on a GitHub issue from conversation context, following the approved plan.
+Continue working on an issue from conversation context, following the approved plan.
 
-### Workflow
+> **Platform routing:** Use the `github` skill (`gh` CLI) for `#` issues, the `linear` skill for `~` issues. Post comments, update labels, and create PRs through the corresponding platform.
 
-#### Step 1: Retrieve Context
+## Workflow
+
+### Step 1: Retrieve Context
 
 1. Find issue ID from conversation history
 2. Locate deep-dive artifacts in `deep-dive/{task-name}/`
 
-#### Step 2: Fetch Latest Updates
+### Step 2: Fetch Latest Updates
 
 ```bash
 gh issue view {issue-id} --json title,body,comments,labels
 ```
 
-#### Step 3: Remove Pending Label
+### Step 3: Remove Pending Label
 
 ```bash
 gh issue edit {issue-id} --remove-label pending
 ```
 
-#### Step 4: Analyze Feedback
+### Step 4: Analyze Feedback
 
 Review comments for:
 - Plan approval/rejection
 - Modification requests
 - Additional requirements
 
-#### Step 5: Take Action
+### Step 5: Take Action
 
 - **Plan approved** → Proceed to implementation
 - **Changes requested** → Update plan, post revised, add "pending" label
 - **Questions asked** → Answer in comment, add "pending" label
 
-#### Step 6: Implementation
+### Step 6: Implementation
 
 1. Read `plan.md` for implementation steps
 2. Create/switch to feature branch
@@ -289,7 +305,7 @@ Review comments for:
 4. Write and run tests after each change
 5. Commit with conventional commit messages
 
-#### Step 7: Create PR
+### Step 7: Create PR
 
 1. Push branch and create Pull Request
 2. Post completion comment to issue
@@ -300,21 +316,23 @@ gh issue comment {issue-id} --body "Work completed. PR created: {pr-url}"
 
 ---
 
-## Operation /issue-create
+# Operation: issue create
 
-**Usage:** `/issue-create [operation]`
+**Usage:** `issue create [operation]`
 
-Create GitHub issues from conversation context.
+Create issues from conversation context.
 
-### Operations
+> **Platform routing:** By default creates GitHub issues via the `github` skill (`gh` CLI). To create a Linear issue instead, prefix with `~` (e.g., `issue create ~feature`).
+
+## Operations
 
 - **create** - Create issue from conversation (flexible, adapts to content)
 - **bug** - Create bug report with reproduction steps
 - **feature** - Create feature request with acceptance criteria
 
-### Workflow
+## Workflow
 
-#### Step 1: Analyze Conversation and Images
+### Step 1: Analyze Conversation and Images
 
 Identify:
 - What the user wants to accomplish
@@ -323,7 +341,7 @@ Identify:
 - Relevant technical context
 - Any images provided by the user
 
-#### Step 2: Upload Images (if provided)
+### Step 2: Upload Images (if provided)
 
 If the user provided images:
 
@@ -351,18 +369,18 @@ If the user provided images:
 
 Note: This ensures images are permanently hosted on GitHub and won't break if external links expire.
 
-#### Step 3: Determine Issue Type
+### Step 3: Determine Issue Type
 
 - Feature request or enhancement
 - Bug report or defect
 - Technical task or chore
 - Documentation need
 
-#### Step 4: Clarify with User
+### Step 4: Clarify with User
 
 Ask 2-4 questions to confirm understanding and fill gaps.
 
-#### Step 5: Create Issue
+### Step 5: Create Issue
 
 ```bash
 gh issue create \
@@ -380,74 +398,151 @@ gh issue create \
 
 ---
 
-## Operation /issue-compact
+# Operation: dashboard
 
-**Usage:** `/issue-compact`
+**Usage:** `dashboard` | `dashboard all`
 
-Consolidate issue discussion into clean body for handoff.
+Display a unified overview of active issues and PRs across GitHub and Linear. Excludes backlog items (GitHub `later` label, Linear `Backlog` state).
 
-### Purpose
+- `dashboard` — Show only items created by or assigned to me
+- `dashboard all` — Show all items across the team, grouped by assignee
 
-Enable handoff: someone unfamiliar with the history can pick up the issue and continue.
+## Workflow
 
-### Workflow
+### Step 1: Fetch GitHub Data
 
-#### Step 1: Fetch Issue Content
+Using the `github` skill (`gh` CLI), fetch in parallel:
+
+**Default mode** (`dashboard`):
 
 ```bash
-gh issue view {issue-id} --json number,title,body,comments
+# Issues created by me (exclude "later" label)
+gh issue list -R vm0-ai/vm0 --author {GITHUB_USER} --json number,title,state,labels,updatedAt | jq '[.[] | select(.labels | map(.name) | index("later") | not)]'
+
+# Issues assigned to me (exclude "later" label)
+gh issue list -R vm0-ai/vm0 --assignee {GITHUB_USER} --json number,title,state,labels,updatedAt | jq '[.[] | select(.labels | map(.name) | index("later") | not)]'
+
+# PRs created by me
+gh pr list -R vm0-ai/vm0 --author {GITHUB_USER} --json number,title,state,labels,updatedAt,reviewDecision
+
+# PRs where my review is requested
+gh pr list -R vm0-ai/vm0 --search "review-requested:{GITHUB_USER}" --json number,title,state,labels,updatedAt
 ```
 
-#### Step 2: Analyze Context
+**All mode** (`dashboard all`):
 
-Review conversation for:
-- Requirement clarifications
-- Design decisions
-- Technical discoveries
-- Plan adjustments
+```bash
+# All open issues (exclude "later" label)
+gh issue list -R vm0-ai/vm0 --json number,title,state,labels,assignees,updatedAt | jq '[.[] | select(.labels | map(.name) | index("later") | not)]'
 
-#### Step 3: Synthesize Content
-
-Create new issue body that preserves:
-- Original requirements and context
-- Key decisions and rationale
-- Technical constraints
-- Current status and next steps
-- Blockers or open questions
-
-Add compact metadata:
+# All open PRs
+gh pr list -R vm0-ai/vm0 --json number,title,state,labels,assignees,updatedAt,reviewDecision
 ```
+
+### Step 2: Fetch Linear Data
+
+Using the `linear` skill, fetch:
+
+**Default mode:** Issues in project `vm0` created by or assigned to me — exclude `Backlog` state
+
+**All mode:** All issues in project `vm0` — exclude `Backlog` state
+
+### Step 3: Present Dashboard
+
+**Default mode** — group by platform:
+
+```
+## GitHub Issues
+| # | Title | State | Labels | Updated |
+
+## GitHub PRs
+| # | Title | State | Review | Updated |
+
+## Linear Issues
+| ID | Title | State | Priority | Updated |
+```
+
+**All mode** — group by assignee, then by platform:
+
+```
+## @alice
+| Source | ID | Title | State | Updated |
+
+## @bob
+| Source | ID | Title | State | Updated |
+
+## Unassigned
+| Source | ID | Title | State | Updated |
+```
+
+- Sort each section by most recently updated
+- Deduplicate items that appear in both "created by" and "assigned to"
+- Highlight items that need attention (e.g., review requested, changes requested)
+
 ---
-> Compacted on YYYY-MM-DD from X comments
-```
 
-#### Step 4: Update Issue
+# Operation: backlog
 
-```bash
-gh issue edit {issue-id} --body-file issue-{issue-id}-compact.md
-```
+**Usage:** `backlog` | `backlog all`
 
-#### Step 5: Delete Comments
+Display backlog items: GitHub issues with the `later` label and Linear issues in `Backlog` state.
 
-```bash
-# Get repo info
-gh repo view --json owner,name --jq '"\(.owner.login)/\(.name)"'
+- `backlog` — Show only items created by or assigned to me
+- `backlog all` — Show all backlog items across the team, grouped by assignee
 
-# Get and delete each comment
-gh api repos/{owner}/{repo}/issues/{issue-id}/comments --jq '.[].id'
-gh api -X DELETE repos/{owner}/{repo}/issues/comments/{comment-id}
-```
+## Workflow
 
----
+### Step 1: Fetch GitHub Backlog
 
-## Label Management
+Using the `github` skill (`gh` CLI):
 
-- **pending** - Waiting for user input (plan review, questions, blocked)
-- Remove when resuming work
-- Add when waiting for feedback
-
-Create label if it doesn't exist:
+**Default mode** (`backlog`):
 
 ```bash
-gh label create pending --description "Waiting for human input" --color FFA500
+# Issues with "later" label created by or assigned to me
+gh issue list -R vm0-ai/vm0 --label later --author {GITHUB_USER} --json number,title,state,labels,updatedAt
+gh issue list -R vm0-ai/vm0 --label later --assignee {GITHUB_USER} --json number,title,state,labels,updatedAt
 ```
+
+**All mode** (`backlog all`):
+
+```bash
+# All issues with "later" label
+gh issue list -R vm0-ai/vm0 --label later --json number,title,state,labels,assignees,updatedAt
+```
+
+### Step 2: Fetch Linear Backlog
+
+Using the `linear` skill, fetch:
+
+**Default mode:** Issues in project `vm0` created by or assigned to me in `Backlog` state
+
+**All mode:** All issues in project `vm0` in `Backlog` state
+
+### Step 3: Present Backlog
+
+**Default mode** — group by platform:
+
+```
+## GitHub Backlog (later)
+| # | Title | Labels | Updated |
+
+## Linear Backlog
+| ID | Title | Priority | Updated |
+```
+
+**All mode** — group by assignee:
+
+```
+## @alice
+| Source | ID | Title | Priority | Updated |
+
+## @bob
+| Source | ID | Title | Priority | Updated |
+
+## Unassigned
+| Source | ID | Title | Priority | Updated |
+```
+
+- Sort each section by most recently updated
+- Deduplicate items that appear in both "created by" and "assigned to"

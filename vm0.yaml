@@ -1,9 +1,19 @@
 version: "1.0"
 agents:
-  my-agent:
+  agent0:
     apps:
       - github
     skills:
       - https://github.com/vm0-ai/vm0-skills/tree/main/github
+      - https://github.com/vm0-ai/vm0-skills/tree/main/linear
+      - https://github.com/vm0-ai/vm0-skills/tree/main/plausible
+      - https://github.com/vm0-ai/vm0-skills/tree/main/agentmail
+      - https://github.com/vm0-ai/vm0-skills/tree/main/axiom
+      - https://github.com/vm0-ai/vm0-skills/tree/main/notion
+      - https://github.com/vm0-ai/vm0-skills/tree/main/vm0-cli
+      - https://github.com/vm0-ai/vm0-skills/tree/main/vm0-agent
+      - https://github.com/vm0-ai/vm0-skills/tree/main/slack
     framework: claude-code
     instructions: AGENTS.md
+    environment:
+      DEFAULT_REPO: ${vars.DEFAULT_REPO}
