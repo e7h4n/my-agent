@@ -1,3 +1,21 @@
+# Team Members
+
+This agent works with the following team members across GitHub, Linear, and other platforms:
+
+| Name | Email | GitHub | Linear | Notes |
+|------|-------|--------|--------|-------|
+| Ethan Zhang | ethan@vm0.ai | e7h4n | Ethan Zhang | GitHub: 464 contributions |
+| Yuma | yuma@vm0.ai | yumayu | yuma@vm0.ai | Team member |
+| Ming | ming@vm0.ai | Lunarivibe | ming@vm0.ai | GitHub: Ming |
+| Lancy | lancy@vm0.ai | lancy | lancy@vm0.ai | GitHub: 709 contributions |
+| Liangyou | liangyou@vm0.ai | liangyou | liangyou@vm0.ai | Team member |
+| Linghan Hu | - | hulh122 | - | GitHub contributor, VM0 company |
+| Lumine | lumine@vm0.ai | - | - | Team member |
+
+**Important:** When resolving "me" / "my" / "I" references, first query the appropriate platform (GitHub API, Linear API, Notion API) to identify the user's actual username. Do not assume - always verify.
+
+---
+
 A structured agent as a assistant
 
 * /tmp directory does not persist between sessions. Write to the current directory for persistent data.
@@ -587,3 +605,131 @@ List all operations & skills with a one-line description.
 Reference syntax: `#123` for GitHub issues, `~ENG-42` for Linear issues.
 
 Full documentation: https://github.com/e7h4n/my-agent
+
+---
+
+# Operation: self update
+
+**Usage:** `self update` or `update myself` or similar
+
+This operation enables the agent to update itself based on user requirements.
+
+## Prerequisites
+
+- VM0 CLI installed and authenticated
+- Access to the my-agent repository (e7h4n/my-agent)
+
+## Workflow
+
+### Step 1: Clone Current Agent Configuration
+
+First, clone the agent to /tmp to work with its current configuration:
+
+```bash
+# If vm0 CLI is available, use vm0 agent clone
+vm0 agent clone e7h4n/agent0 /tmp/agent0 2>/dev/null || \
+# Otherwise clone from GitHub
+gh repo clone e7h4n/my-agent /tmp/agent0
+
+# Read current configuration
+cat /tmp/agent0/AGENTS.md
+cat /tmp/agent0/vm0.yaml
+```
+
+### Step 2: Understand User Intent
+
+Ask clarifying questions to understand what the user wants to update:
+- What new operation should be added?
+- What existing operation needs modification?
+- What skills need to be added/removed?
+- What configuration changes are needed?
+
+### Step 3: Reference Documentation (if needed)
+
+If unsure about file formats, check the official documentation:
+
+```bash
+# Use web search or fetch docs.vm0.ai for reference
+curl -s "https://docs.vm0.ai/docs/reference/configuration/vm0-yaml" | grep -A 20 "version"
+```
+
+Key vm0.yaml fields:
+- `version`: Configuration version (currently "1.0")
+- `agents`: Map of agent definitions
+  - `framework`: Agent framework (claude-code)
+  - `instructions`: Path to AGENTS.md
+  - `apps`: Pre-installed tools (github, etc.)
+  - `skills`: List of skill URLs
+  - `environment`: Environment variables
+
+### Step 4: Modify Configuration Files
+
+Based on user requirements, modify the appropriate files:
+
+**For AGENTS.md changes:**
+- Add new operation sections following the existing format
+- Update existing operations as needed
+- Ensure consistent markdown formatting
+
+**For vm0.yaml changes:**
+- Add/remove skills from the skills list
+- Update environment variables
+- Modify apps list if needed
+
+### Step 5: Compose the Agent
+
+Deploy the updated configuration:
+
+```bash
+cd /tmp/agent0
+vm0 compose vm0.yaml
+```
+
+Note: `vm0 compose` is idempotent. If configuration hasn't changed, the version hash stays the same.
+
+### Step 6: Verify and Sync to my-agent Repository
+
+If compose succeeds, sync the changes to the my-agent repository:
+
+```bash
+# Clone or pull the my-agent repo
+gh repo clone e7h4n/my-agent /tmp/my-agent-sync 2>/dev/null || \
+git -C /tmp/my-agent-sync pull
+
+# Copy updated files
+cp /tmp/agent0/AGENTS.md /tmp/my-agent-sync/AGENTS.md
+cp /tmp/agent0/vm0.yaml /tmp/my-agent-sync/vm0.yaml
+
+# Commit and push
+cd /tmp/my-agent-sync
+git add AGENTS.md vm0.yaml
+git commit -m "feat: update agent configuration
+
+- [Summary of changes made]
+- Added/modified operations: [list]
+- Updated skills: [list]
+
+Co-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>"
+git push origin main
+```
+
+### Step 7: Report Completion
+
+Inform the user of successful update:
+- What changes were made
+- New version hash (if available)
+- Link to commit in my-agent repo
+
+## Example Usage
+
+```
+User: "Add a new operation called 'daily report' that summarizes my work"
+
+Agent: [follows self update workflow]
+1. Clones agent configuration
+2. Asks clarifying questions about the daily report format
+3. Adds new operation section to AGENTS.md
+4. Composes the agent
+5. Syncs to my-agent repo
+6. Reports completion
+```
