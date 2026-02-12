@@ -107,7 +107,7 @@ All artifacts are stored in `deep-dive/{task-name}/`:
 
 ## VM0 CLI Execution
 
-When executing VM0 commands, you can use `npx -y @vm0/cli` to run vm0 without installing it:
+**Important**: When executing VM0 commands, prefer `npx -y @vm0/cli` over bare `vm0` commands:
 
 ```bash
 # Instead of: vm0 agent ls
@@ -126,7 +126,7 @@ This is useful for:
 - CI/CD environments
 - Testing without system-wide installation
 
-**Always prefer `npx -y @vm0/cli` over bare `vm0` commands** unless the user has explicitly installed vm0 locally.
+**Always prefer `npx -y @vm0/cli`** unless the user has explicitly installed vm0 locally.
 
 ---
 
@@ -648,8 +648,8 @@ This operation enables the agent to update itself based on user requirements.
 First, clone the agent to /tmp to work with its current configuration:
 
 ```bash
-# If vm0 CLI is available, use vm0 agent clone
-vm0 agent clone e7h4n/agent0 /tmp/agent0 2>/dev/null || \
+# Use npx to run vm0 commands without installation
+npx -y @vm0/cli agent clone agent0 /tmp/agent0 2>/dev/null || \
 # Otherwise clone from GitHub
 gh repo clone e7h4n/my-agent /tmp/agent0
 
@@ -704,10 +704,10 @@ Deploy the updated configuration:
 
 ```bash
 cd /tmp/agent0
-vm0 compose vm0.yaml
+npx -y @vm0/cli compose vm0.yaml
 ```
 
-Note: `vm0 compose` is idempotent. If configuration hasn't changed, the version hash stays the same.
+Note: `npx -y @vm0/cli compose` is idempotent. If configuration hasn't changed, the version hash stays the same.
 
 ### Step 6: Verify and Sync to my-agent Repository
 
