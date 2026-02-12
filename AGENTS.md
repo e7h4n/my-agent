@@ -4,6 +4,7 @@ A structured agent as a assistant
 * GitHub operations use the `github` skill (`gh` CLI). Linear operations use the `linear` skill.
 * All persistent content must be written in English, including issues, PRs, code, comments, commits, emails, and documentation.
 * Avoid markdown tables for data output — they render poorly in Slack. Use Slack-friendly markdown (bold, lists, code blocks) instead.
+* When the user refers to "me" / "my" / "I", resolve their identity first by querying available platforms (e.g., `gh api /user`, Linear API, Notion API). Do not assume a username — always verify.
 
 # External References
 
@@ -34,10 +35,10 @@ When working with GitHub-related operations:
 
 - **Default GitHub repository**: `vm0-ai/vm0` — Use this when no specific repository is mentioned
 - **Default Linear project**: `vm0`
-- **"me" / "my"**: Refers to GitHub user `{GITHUB_USER}` (https://github.com/{GITHUB_USER})
+- **"me" / "my"**: Resolve via `gh api /user` to get the current GitHub username
 
 Examples:
-- "list my PRs" → `gh pr list -R vm0-ai/vm0 --author {GITHUB_USER}`
+- "list my PRs" → first run `gh api /user -q .login` to get username, then `gh pr list -R vm0-ai/vm0 --author <username>`
 - "show repo issues" → `gh issue list -R vm0-ai/vm0`
 - "assign this issue to me" → `gh issue edit {id} -R vm0-ai/vm0 --add-assignee {GITHUB_USER}`
 
@@ -398,22 +399,17 @@ gh issue create \
 
 ---
 
-# Operation: dashboard
+# Operation: my work
 
-**Usage:** `dashboard` | `dashboard all`
+**Usage:** `my work`
 
-Display a unified overview of active issues and PRs across GitHub and Linear. Excludes backlog items (GitHub `later` label, Linear `Backlog` state).
-
-- `dashboard` — Show only items created by or assigned to me
-- `dashboard all` — Show all items across the team, grouped by assignee
+Display active issues and PRs created by or assigned to me. Excludes backlog items (GitHub `later` label, Linear `Backlog` state).
 
 ## Workflow
 
 ### Step 1: Fetch GitHub Data
 
 Using the `github` skill (`gh` CLI), fetch in parallel:
-
-**Default mode** (`dashboard`):
 
 ```bash
 # Issues created by me (exclude "later" label)
@@ -429,7 +425,42 @@ gh pr list -R vm0-ai/vm0 --author {GITHUB_USER} --json number,title,state,labels
 gh pr list -R vm0-ai/vm0 --search "review-requested:{GITHUB_USER}" --json number,title,state,labels,updatedAt
 ```
 
-**All mode** (`dashboard all`):
+### Step 2: Fetch Linear Data
+
+Using the `linear` skill, fetch issues in project `vm0` created by or assigned to me — exclude `Backlog` state.
+
+### Step 3: Present Results
+
+Group by platform:
+
+```
+## GitHub Issues
+- #123 Title (state, labels, updated)
+
+## GitHub PRs
+- #456 Title (state, review, updated)
+
+## Linear Issues
+- ENG-42 Title (state, priority, updated)
+```
+
+- Sort each section by most recently updated
+- Deduplicate items that appear in both "created by" and "assigned to"
+- Highlight items that need attention (e.g., review requested, changes requested)
+
+---
+
+# Operation: we work
+
+**Usage:** `we work`
+
+Display all active issues and PRs across the team, grouped by assignee. Excludes backlog items (GitHub `later` label, Linear `Backlog` state).
+
+## Workflow
+
+### Step 1: Fetch GitHub Data
+
+Using the `github` skill (`gh` CLI), fetch in parallel:
 
 ```bash
 # All open issues (exclude "later" label)
@@ -441,54 +472,35 @@ gh pr list -R vm0-ai/vm0 --json number,title,state,labels,assignees,updatedAt,re
 
 ### Step 2: Fetch Linear Data
 
-Using the `linear` skill, fetch:
+Using the `linear` skill, fetch all issues in project `vm0` — exclude `Backlog` state.
 
-**Default mode:** Issues in project `vm0` created by or assigned to me — exclude `Backlog` state
+### Step 3: Present Results
 
-**All mode:** All issues in project `vm0` — exclude `Backlog` state
-
-### Step 3: Present Dashboard
-
-**Default mode** — group by platform:
-
-```
-## GitHub Issues
-| # | Title | State | Labels | Updated |
-
-## GitHub PRs
-| # | Title | State | Review | Updated |
-
-## Linear Issues
-| ID | Title | State | Priority | Updated |
-```
-
-**All mode** — group by assignee, then by platform:
+Group by assignee:
 
 ```
 ## @alice
-| Source | ID | Title | State | Updated |
+- GitHub #123 Title (state, updated)
+- Linear ENG-42 Title (state, updated)
 
 ## @bob
-| Source | ID | Title | State | Updated |
+- GitHub #456 Title (state, updated)
 
 ## Unassigned
-| Source | ID | Title | State | Updated |
+- GitHub #789 Title (state, updated)
 ```
 
 - Sort each section by most recently updated
-- Deduplicate items that appear in both "created by" and "assigned to"
+- Deduplicate items
 - Highlight items that need attention (e.g., review requested, changes requested)
 
 ---
 
-# Operation: backlog
+# Operation: my backlog
 
-**Usage:** `backlog` | `backlog all`
+**Usage:** `my backlog`
 
-Display backlog items: GitHub issues with the `later` label and Linear issues in `Backlog` state.
-
-- `backlog` — Show only items created by or assigned to me
-- `backlog all` — Show all backlog items across the team, grouped by assignee
+Display my backlog items: GitHub issues with the `later` label and Linear issues in `Backlog` state, created by or assigned to me.
 
 ## Workflow
 
@@ -496,15 +508,44 @@ Display backlog items: GitHub issues with the `later` label and Linear issues in
 
 Using the `github` skill (`gh` CLI):
 
-**Default mode** (`backlog`):
-
 ```bash
 # Issues with "later" label created by or assigned to me
 gh issue list -R vm0-ai/vm0 --label later --author {GITHUB_USER} --json number,title,state,labels,updatedAt
 gh issue list -R vm0-ai/vm0 --label later --assignee {GITHUB_USER} --json number,title,state,labels,updatedAt
 ```
 
-**All mode** (`backlog all`):
+### Step 2: Fetch Linear Backlog
+
+Using the `linear` skill, fetch issues in project `vm0` created by or assigned to me in `Backlog` state.
+
+### Step 3: Present Results
+
+Group by platform:
+
+```
+## GitHub Backlog (later)
+- #123 Title (labels, updated)
+
+## Linear Backlog
+- ENG-42 Title (priority, updated)
+```
+
+- Sort each section by most recently updated
+- Deduplicate items that appear in both "created by" and "assigned to"
+
+---
+
+# Operation: we backlog
+
+**Usage:** `we backlog`
+
+Display all backlog items across the team, grouped by assignee. GitHub issues with the `later` label and Linear issues in `Backlog` state.
+
+## Workflow
+
+### Step 1: Fetch GitHub Backlog
+
+Using the `github` skill (`gh` CLI):
 
 ```bash
 # All issues with "later" label
@@ -513,39 +554,23 @@ gh issue list -R vm0-ai/vm0 --label later --json number,title,state,labels,assig
 
 ### Step 2: Fetch Linear Backlog
 
-Using the `linear` skill, fetch:
+Using the `linear` skill, fetch all issues in project `vm0` in `Backlog` state.
 
-**Default mode:** Issues in project `vm0` created by or assigned to me in `Backlog` state
+### Step 3: Present Results
 
-**All mode:** All issues in project `vm0` in `Backlog` state
-
-### Step 3: Present Backlog
-
-**Default mode** — group by platform:
-
-```
-## GitHub Backlog (later)
-| # | Title | Labels | Updated |
-
-## Linear Backlog
-| ID | Title | Priority | Updated |
-```
-
-**All mode** — group by assignee:
+Group by assignee:
 
 ```
 ## @alice
-| Source | ID | Title | Priority | Updated |
-
-## @bob
-| Source | ID | Title | Priority | Updated |
+- GitHub #123 Title (priority, updated)
+- Linear ENG-42 Title (priority, updated)
 
 ## Unassigned
-| Source | ID | Title | Priority | Updated |
+- GitHub #789 Title (priority, updated)
 ```
 
 - Sort each section by most recently updated
-- Deduplicate items that appear in both "created by" and "assigned to"
+- Deduplicate items
 
 ---
 
