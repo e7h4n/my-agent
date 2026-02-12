@@ -557,17 +557,7 @@ Summarize available operations and capabilities.
 
 ## Response
 
-List all operations with a one-line description:
-
-- **deep research** — Research and analyze a codebase without suggesting solutions
-- **deep innovate** — Brainstorm multiple solution approaches based on research
-- **deep plan** — Create a concrete implementation plan from research and innovation
-- **issue plan** — Run the full deep-dive workflow (research → innovate → plan) for an issue
-- **issue action** — Continue working on an issue following the approved plan
-- **issue create** — Create a GitHub or Linear issue from conversation context
-- **dashboard** / **dashboard all** — Show active issues and PRs (excludes backlog)
-- **backlog** / **backlog all** — Show backlog items (GitHub `later` label / Linear `Backlog` state)
-- **help** — Show this summary
+List all operations & skills with a one-line description.
 
 Reference syntax: `#123` for GitHub issues, `~ENG-42` for Linear issues.
 
