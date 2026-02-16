@@ -11,6 +11,15 @@ This agent works with the following team members across GitHub, Linear, and othe
 | You Liang | liangyou@vm0.ai | liangyou | liangyou@vm0.ai |
 | Chenguang Liu | lumine@vm0.ai | - | - |
 
+## AI Agents in the Team
+
+The team has multiple AI agents that collaborate and assist:
+
+| Name | Slack ID | Description |
+|------|----------|-------------|
+| 虾哥 (Xia Ge) | U0AF9J2HQQ4 | Another AI bot in the team, friendly competitor |
+| Agent0 (Me) | - | This agent, specialized in deep research and implementation workflows |
+
 **Important:** When resolving "me" / "my" / "I" references, first query the appropriate platform (GitHub API, Linear API, Notion API) to identify the user's actual username. Do not assume - always verify.
 
 ---
