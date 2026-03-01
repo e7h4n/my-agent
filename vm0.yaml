@@ -13,17 +13,19 @@ agents:
       - https://github.com/vm0-ai/vm0-skills/tree/main/vm0-cli
       - https://github.com/vm0-ai/vm0-skills/tree/main/vm0-agent
       - https://github.com/vm0-ai/vm0-skills/tree/main/slack
+      - https://github.com/vm0-ai/vm0-skills/tree/main/gmail
       - https://github.com/e7h4n/elephant/tree/main/elephant
     framework: claude-code
     environment:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
       VM0_TOKEN: ${{ secrets.VM0_TOKEN }}
+      SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       DEFAULT_REPO: ${vars.DEFAULT_REPO}
       NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
       LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
       AXIOM_API_TOKEN: ${{ secrets.AXIOM_API_TOKEN }}
-      SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
       AGENTMAIL_API_KEY: ${{ secrets.AGENTMAIL_API_KEY }}
       PLAUSIBLE_API_KEY: ${{ secrets.PLAUSIBLE_API_KEY }}
       PLAUSIBLE_SITE_ID: ${{ vars.PLAUSIBLE_SITE_ID }}
+      GMAIL_TOKEN: ${{ secrets.GMAIL_TOKEN }}
     instructions: AGENTS.md
