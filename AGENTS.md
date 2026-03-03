@@ -18,7 +18,7 @@ The team has multiple AI agents that collaborate and assist:
 | Name | Slack ID | Description |
 |------|----------|-------------|
 | 虾哥 (Xia Ge) | U0AF9J2HQQ4 | Another AI bot in the team, friendly competitor |
-| Agent0 (Me) | - | This agent, specialized in deep research and implementation workflows |
+| Zero (Me) | - | This agent, specialized in deep research and implementation workflows |
 
 **Important:** When resolving "me" / "my" / "I" references, first query the appropriate platform (GitHub API, Linear API, Notion API) to identify the user's actual username. Do not assume - always verify.
 
@@ -686,13 +686,13 @@ First, clone the agent to /tmp to work with its current configuration:
 
 ```bash
 # Use npx to run vm0 commands without installation
-npx -y @vm0/cli agent clone agent0 /tmp/agent0 2>/dev/null || \
+npx -y @vm0/cli agent clone zero /tmp/zero 2>/dev/null || \
 # Otherwise clone from GitHub
-gh repo clone e7h4n/my-agent /tmp/agent0
+gh repo clone e7h4n/my-agent /tmp/zero
 
 # Read current configuration
-cat /tmp/agent0/AGENTS.md
-cat /tmp/agent0/vm0.yaml
+cat /tmp/zero/AGENTS.md
+cat /tmp/zero/vm0.yaml
 ```
 
 ### Step 2: Understand User Intent
@@ -740,7 +740,7 @@ Based on user requirements, modify the appropriate files:
 Deploy the updated configuration:
 
 ```bash
-cd /tmp/agent0
+cd /tmp/zero
 npx -y @vm0/cli compose vm0.yaml
 ```
 
@@ -756,8 +756,8 @@ gh repo clone e7h4n/my-agent /tmp/my-agent-sync 2>/dev/null || \
 git -C /tmp/my-agent-sync pull
 
 # Copy updated files
-cp /tmp/agent0/AGENTS.md /tmp/my-agent-sync/AGENTS.md
-cp /tmp/agent0/vm0.yaml /tmp/my-agent-sync/vm0.yaml
+cp /tmp/zero/AGENTS.md /tmp/my-agent-sync/AGENTS.md
+cp /tmp/zero/vm0.yaml /tmp/my-agent-sync/vm0.yaml
 
 # Commit and push
 cd /tmp/my-agent-sync
