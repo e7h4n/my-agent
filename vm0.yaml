@@ -19,6 +19,7 @@ agents:
       - https://github.com/e7h4n/elephant/tree/main/elephant
       - https://github.com/vm0-ai/vm0-skills/tree/main/productlane
       - https://github.com/vm0-ai/vm0-skills/tree/main/x
+      - https://github.com/vm0-ai/vm0-skills/tree/main/figma
     framework: claude-code
     environment:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -28,6 +29,7 @@ agents:
       DEFAULT_REPO: ${vars.DEFAULT_REPO}
       NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
       LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+      X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
       AXIOM_API_TOKEN: ${{ secrets.AXIOM_API_TOKEN }}
       AGENTMAIL_API_KEY: ${{ secrets.AGENTMAIL_API_KEY }}
       GOOGLE_DOCS_TOKEN: ${{ secrets.GOOGLE_DOCS_TOKEN }}
@@ -37,5 +39,5 @@ agents:
       GOOGLE_SHEETS_TOKEN: ${{ secrets.GOOGLE_SHEETS_TOKEN }}
       PRODUCTLANE_API_KEY: ${{ secrets.PRODUCTLANE_API_KEY }}
       GOOGLE_CALENDAR_TOKEN: ${{ secrets.GOOGLE_CALENDAR_TOKEN }}
-      X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+      FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
     instructions: AGENTS.md

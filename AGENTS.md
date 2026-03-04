@@ -109,6 +109,30 @@ All artifacts are stored in `deep-dive/{task-name}/`:
 | `innovate.md` | Innovate | Solution approaches, trade-offs |
 | `plan.md` | Plan | Implementation steps, task breakdown |
 
+## Figma Integration
+
+When working with Figma design files:
+
+- **Skill**: The `figma` skill provides REST API access to design files, comments, components, and projects
+- **Authentication**: Requires `FIGMA_TOKEN` environment variable configured via vm0 platform OAuth connector
+
+**Key capabilities:**
+- Access design file structure (frames, components, styles)
+- Export images in PNG, JPG, SVG, or PDF formats
+- Manage comments programmatically
+- Retrieve version history
+- Access component sets and design system information
+- Get image fills and embedded assets
+
+**Common workflows:**
+- Design review and analysis
+- Automated asset export
+- Design-to-code conversion
+- Design system documentation
+- Comment collaboration
+
+Use the `figma` skill commands to interact with Figma workspaces directly from agent workflows.
+
 ## Prerequisites
 
 - [GitHub CLI](https://cli.github.com/) (`gh`) installed and authenticated for issue operations
