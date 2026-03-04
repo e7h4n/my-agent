@@ -20,10 +20,12 @@ agents:
       - https://github.com/vm0-ai/vm0-skills/tree/main/productlane
       - https://github.com/vm0-ai/vm0-skills/tree/main/x
       - https://github.com/vm0-ai/vm0-skills/tree/main/figma
+      - https://github.com/vm0-ai/vm0-skills/tree/main/sentry
     framework: claude-code
     environment:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
       VM0_TOKEN: ${{ secrets.VM0_TOKEN }}
+      FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
       GMAIL_TOKEN: ${{ secrets.GMAIL_TOKEN }}
       SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       DEFAULT_REPO: ${vars.DEFAULT_REPO}
@@ -39,5 +41,5 @@ agents:
       GOOGLE_SHEETS_TOKEN: ${{ secrets.GOOGLE_SHEETS_TOKEN }}
       PRODUCTLANE_API_KEY: ${{ secrets.PRODUCTLANE_API_KEY }}
       GOOGLE_CALENDAR_TOKEN: ${{ secrets.GOOGLE_CALENDAR_TOKEN }}
-      FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+      SENTRY_TOKEN: ${{ secrets.SENTRY_TOKEN }}
     instructions: AGENTS.md
