@@ -165,6 +165,32 @@ fi
 - Always use `VM0_TOKEN` environment variable for authentication
 - Users must configure this in their platform secrets at https://platform.vm0.ai
 
+## CI/CD Runner Workflow
+
+**Critical workflow insight for GitHub Actions:**
+
+When a runner fails but the prepare step succeeds, directly rerunning failed jobs will NOT re-execute the prepare step. This causes deploy-runner to continue failing because it relies on the prepare output.
+
+**Correct retry workflow:**
+
+1. **Identify the dependency chain:**
+   - `prepare runner` → `deploy-runner`
+   - Deploy-runner depends on artifacts/state from prepare runner
+
+2. **When deploy-runner fails:**
+   - ❌ **DON'T:** Click "Re-run failed jobs" (skips prepare runner)
+   - ✅ **DO:** Re-run from `prepare runner` step to recreate the required state
+
+3. **Why this matters:**
+   - GitHub Actions marks prepare runner as "success"
+   - "Re-run failed jobs" only reruns failed steps
+   - Deploy-runner fails repeatedly without fresh prepare output
+
+**Best practice:**
+- Always re-run from the earliest dependent step in the chain
+- If deploy-runner fails, start from prepare runner
+- This ensures all dependencies are properly regenerated
+
 ---
 
 # Operation: deep research
