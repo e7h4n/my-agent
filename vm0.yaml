@@ -17,6 +17,7 @@ agents:
       - https://github.com/vm0-ai/vm0-skills/tree/main/google-docs
       - https://github.com/vm0-ai/vm0-skills/tree/main/google-calendar
       - https://github.com/e7h4n/elephant/tree/main/elephant
+      - https://github.com/vm0-ai/vm0-skills/tree/main/productlane
     framework: claude-code
     environment:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -28,6 +29,11 @@ agents:
       LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
       AXIOM_API_TOKEN: ${{ secrets.AXIOM_API_TOKEN }}
       AGENTMAIL_API_KEY: ${{ secrets.AGENTMAIL_API_KEY }}
+      GOOGLE_DOCS_TOKEN: ${{ secrets.GOOGLE_DOCS_TOKEN }}
       PLAUSIBLE_API_KEY: ${{ secrets.PLAUSIBLE_API_KEY }}
       PLAUSIBLE_SITE_ID: ${{ vars.PLAUSIBLE_SITE_ID }}
+      GOOGLE_DRIVE_TOKEN: ${{ secrets.GOOGLE_DRIVE_TOKEN }}
+      GOOGLE_SHEETS_TOKEN: ${{ secrets.GOOGLE_SHEETS_TOKEN }}
+      GOOGLE_CALENDAR_TOKEN: ${{ secrets.GOOGLE_CALENDAR_TOKEN }}
+      PRODUCTLANE_API_KEY: ${{ secrets.PRODUCTLANE_API_KEY }}
     instructions: AGENTS.md
