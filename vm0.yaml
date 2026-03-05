@@ -21,6 +21,7 @@ agents:
       - https://github.com/vm0-ai/vm0-skills/tree/main/x
       - https://github.com/vm0-ai/vm0-skills/tree/main/figma
       - https://github.com/vm0-ai/vm0-skills/tree/main/sentry
+      - https://github.com/vm0-ai/vm0-skills/tree/main/vercel
     framework: claude-code
     environment:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
@@ -30,6 +31,7 @@ agents:
       SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
       DEFAULT_REPO: ${vars.DEFAULT_REPO}
       NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+      SENTRY_TOKEN: ${{ secrets.SENTRY_TOKEN }}
       LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
       X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
       AXIOM_API_TOKEN: ${{ secrets.AXIOM_API_TOKEN }}
@@ -41,5 +43,4 @@ agents:
       GOOGLE_SHEETS_TOKEN: ${{ secrets.GOOGLE_SHEETS_TOKEN }}
       PRODUCTLANE_API_KEY: ${{ secrets.PRODUCTLANE_API_KEY }}
       GOOGLE_CALENDAR_TOKEN: ${{ secrets.GOOGLE_CALENDAR_TOKEN }}
-      SENTRY_TOKEN: ${{ secrets.SENTRY_TOKEN }}
     instructions: AGENTS.md
