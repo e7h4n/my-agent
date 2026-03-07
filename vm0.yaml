@@ -32,6 +32,7 @@ agents:
       DEFAULT_REPO: ${vars.DEFAULT_REPO}
       NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
       SENTRY_TOKEN: ${{ secrets.SENTRY_TOKEN }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
       X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
       AXIOM_API_TOKEN: ${{ secrets.AXIOM_API_TOKEN }}
