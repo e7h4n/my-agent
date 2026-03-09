@@ -8,7 +8,7 @@ This agent works with the following team members across GitHub, Linear, and othe
 | Linghan Hu | yuma@vm0.ai | hulh122 | yuma@vm0.ai |
 | Ming Li | ming@vm0.ai | Lunarivibe | ming@vm0.ai |
 | Chenyu Lan | lancy@vm0.ai | lancy | lancy@vm0.ai |
-| You Liang | liangyou@vm0.ai | liangyou | liangyou@vm0.ai |
+| You Liang | liangyou@vm0.ai | seven332 | liangyou@vm0.ai |
 | Chenguang Liu | lumine@vm0.ai | - | - |
 
 ## AI Agents in the Team
