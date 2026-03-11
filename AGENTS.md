@@ -265,6 +265,93 @@ When a runner fails but the prepare step succeeds, directly rerunning failed job
 
 ---
 
+# Production Debugging with Sentry & Axiom
+
+When investigating production incidents involving database errors, connection issues, or service outages:
+
+## Quick Error Investigation Workflow
+
+### 1. Query Sentry for Recent Errors
+
+```bash
+# List unresolved DB-related issues
+curl -s -G "https://sentry.io/api/0/organizations/vm0/issues/" \
+  -H "Authorization: Bearer $SENTRY_TOKEN" \
+  --data-urlencode "query=is:unresolved database OR neon OR postgres OR prisma" \
+  | python3 -c "import sys,json; [print(f'*{d[\"shortId\"]}*: {d[\"title\"][:60]}...\n  {d[\"culprit\"]} | Last: {d[\"lastSeen\"][:10]} | Count: {d[\"count\"]}\n') for d in json.load(sys.stdin)]"
+```
+
+### 2. Get Detailed Error Stack
+
+```bash
+# Fetch specific event details with full stacktrace
+curl -s "https://sentry.io/api/0/projects/vm0/web/events/{event-id}/" \
+  -H "Authorization: Bearer $SENTRY_TOKEN" \
+  | python3 -c "
+import sys, json
+e = json.load(sys.stdin)
+print(f'Event: {e.get(\"eventID\")}')
+print(f'Time: {e.get(\"dateCreated\")}')
+print(f'Culprit: {e.get(\"culprit\")}')
+for entry in e.get('entries', []):
+    if entry.get('type') == 'exception':
+        for v in entry.get('data', {}).get('values', []):
+            print(f'Exception: {v.get(\"type\")}: {v.get(\"value\")}')
+            for f in v.get('stacktrace', {}).get('frames', [])[-5:]:
+                print(f'  {f.get(\"filename\")}:{f.get(\"lineno\")} -> {f.get(\"function\")}')
+"
+```
+
+### 3. Query Axiom for Request Logs
+
+```bash
+# Find 5xx errors in request logs
+curl -s -X POST "https://api.axiom.co/v1/datasets/_apl?format=tabular" \
+  -H "Authorization: Bearer $AXIOM_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "apl": "['\''vm0-request-log-prod'\'''] | where status >= 500 | sort by _time desc | limit 10",
+    "startTime": "2025-03-09T00:00:00Z",
+    "endTime": "2025-03-11T23:59:59Z"
+  }'
+```
+
+## What Users Expect to See
+
+When reporting production errors, include:
+
+1. **Error Summary**
+   - Issue ID (e.g., WEB-1M)
+   - Exact timestamp (UTC)
+   - Affected endpoint/service
+   - Error frequency (count, last occurrence)
+
+2. **Root Cause Details**
+   - Specific error message (e.g., `column X does not exist`)
+   - SQL query that failed (if applicable)
+   - Full stacktrace with file paths and line numbers
+
+3. **Impact Analysis**
+   - Which users/features affected
+   - Whether error is ongoing or resolved
+   - Related issues (same root cause pattern)
+
+4. **Migration Gap Detection**
+   - Flag errors like "column does not exist" or "relation does not exist"
+   - These indicate code deployed before database migration
+   - Cross-reference with recent deployments
+
+## Common Error Patterns
+
+| Pattern | Likely Cause | Action |
+|---------|--------------|--------|
+| `column X does not exist` | Migration not run | Check pending migrations |
+| `relation X does not exist` | Table not created | Verify migration order |
+| `Connection terminated` | Neon timeout / pool issue | Check connection pool config |
+| `Failed query: ...` | Drizzle/ORM error | Review query in source file |
+
+---
+
 # Operation: deep research
 
 **Usage:** `deep research [task description]`
