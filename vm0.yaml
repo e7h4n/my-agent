@@ -22,5 +22,59 @@ agents:
       - https://github.com/vm0-ai/vm0-skills/tree/main/figma
       - https://github.com/vm0-ai/vm0-skills/tree/main/sentry
       - https://github.com/vm0-ai/vm0-skills/tree/main/vercel
+      - https://github.com/vm0-ai/vm0-skills/tree/main/xero
+      - https://github.com/vm0-ai/vm0-skills/tree/main/mercury
+      - https://github.com/vm0-ai/vm0-skills/tree/main/account-reconciliation
+      - https://github.com/vm0-ai/vm0-skills/tree/main/analysis-qa
+      - https://github.com/vm0-ai/vm0-skills/tree/main/audit-readiness
+      - https://github.com/vm0-ai/vm0-skills/tree/main/brand-guidelines
+      - https://github.com/vm0-ai/vm0-skills/tree/main/campaign-strategy
+      - https://github.com/vm0-ai/vm0-skills/tree/main/competitor-matrix
+      - https://github.com/vm0-ai/vm0-skills/tree/main/contract-redline
+      - https://github.com/vm0-ai/vm0-skills/tree/main/copywriting
+      - https://github.com/vm0-ai/vm0-skills/tree/main/customer-intel
+      - https://github.com/vm0-ai/vm0-skills/tree/main/customer-reply
+      - https://github.com/vm0-ai/vm0-skills/tree/main/data-profiling
+      - https://github.com/vm0-ai/vm0-skills/tree/main/escalation-brief
+      - https://github.com/vm0-ai/vm0-skills/tree/main/flux-analysis
+      - https://github.com/vm0-ai/vm0-skills/tree/main/gaap-reporting
+      - https://github.com/vm0-ai/vm0-skills/tree/main/issue-triage
+      - https://github.com/vm0-ai/vm0-skills/tree/main/journal-entries
+      - https://github.com/vm0-ai/vm0-skills/tree/main/kb-authoring
+      - https://github.com/vm0-ai/vm0-skills/tree/main/legal-briefing
+      - https://github.com/vm0-ai/vm0-skills/tree/main/legal-risk-scoring
+      - https://github.com/vm0-ai/vm0-skills/tree/main/marketing-analytics
+      - https://github.com/vm0-ai/vm0-skills/tree/main/nda-screening
+      - https://github.com/vm0-ai/vm0-skills/tree/main/period-close
+      - https://github.com/vm0-ai/vm0-skills/tree/main/prd-writing
+      - https://github.com/vm0-ai/vm0-skills/tree/main/privacy-compliance
+      - https://github.com/vm0-ai/vm0-skills/tree/main/product-metrics
+      - https://github.com/vm0-ai/vm0-skills/tree/main/reply-templates
+      - https://github.com/vm0-ai/vm0-skills/tree/main/research-synthesis
+      - https://github.com/vm0-ai/vm0-skills/tree/main/roadmap-planning
+      - https://github.com/vm0-ai/vm0-skills/tree/main/sql-cookbook
+      - https://github.com/vm0-ai/vm0-skills/tree/main/stats-methods
+      - https://github.com/vm0-ai/vm0-skills/tree/main/status-updates
     framework: claude-code
+    environment:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      VM0_TOKEN: ${{ secrets.VM0_TOKEN }}
+      AXIOM_TOKEN: ${{ secrets.AXIOM_TOKEN }}
+      FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
+      GMAIL_TOKEN: ${{ secrets.GMAIL_TOKEN }}
+      SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+      LINEAR_TOKEN: ${{ secrets.LINEAR_TOKEN }}
+      NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+      SENTRY_TOKEN: ${{ secrets.SENTRY_TOKEN }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
+      AGENTMAIL_TOKEN: ${{ secrets.AGENTMAIL_TOKEN }}
+      PLAUSIBLE_TOKEN: ${{ secrets.PLAUSIBLE_TOKEN }}
+      GOOGLE_DOCS_TOKEN: ${{ secrets.GOOGLE_DOCS_TOKEN }}
+      PRODUCTLANE_TOKEN: ${{ secrets.PRODUCTLANE_TOKEN }}
+      GOOGLE_DRIVE_TOKEN: ${{ secrets.GOOGLE_DRIVE_TOKEN }}
+      GOOGLE_SHEETS_TOKEN: ${{ secrets.GOOGLE_SHEETS_TOKEN }}
+      GOOGLE_CALENDAR_TOKEN: ${{ secrets.GOOGLE_CALENDAR_TOKEN }}
+      XERO_TOKEN: ${{ secrets.XERO_TOKEN }}
+      MERCURY_TOKEN: ${{ secrets.MERCURY_TOKEN }}
     instructions: AGENTS.md
