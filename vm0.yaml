@@ -59,6 +59,7 @@ agents:
     environment:
       GH_TOKEN: ${{ secrets.GH_TOKEN }}
       VM0_TOKEN: ${{ secrets.VM0_TOKEN }}
+      XERO_TOKEN: ${{ secrets.XERO_TOKEN }}
       AXIOM_TOKEN: ${{ secrets.AXIOM_TOKEN }}
       FIGMA_TOKEN: ${{ secrets.FIGMA_TOKEN }}
       GMAIL_TOKEN: ${{ secrets.GMAIL_TOKEN }}
@@ -67,6 +68,7 @@ agents:
       NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
       SENTRY_TOKEN: ${{ secrets.SENTRY_TOKEN }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      MERCURY_TOKEN: ${{ secrets.MERCURY_TOKEN }}
       X_ACCESS_TOKEN: ${{ secrets.X_ACCESS_TOKEN }}
       AGENTMAIL_TOKEN: ${{ secrets.AGENTMAIL_TOKEN }}
       PLAUSIBLE_TOKEN: ${{ secrets.PLAUSIBLE_TOKEN }}
@@ -75,6 +77,4 @@ agents:
       GOOGLE_DRIVE_TOKEN: ${{ secrets.GOOGLE_DRIVE_TOKEN }}
       GOOGLE_SHEETS_TOKEN: ${{ secrets.GOOGLE_SHEETS_TOKEN }}
       GOOGLE_CALENDAR_TOKEN: ${{ secrets.GOOGLE_CALENDAR_TOKEN }}
-      XERO_TOKEN: ${{ secrets.XERO_TOKEN }}
-      MERCURY_TOKEN: ${{ secrets.MERCURY_TOKEN }}
     instructions: AGENTS.md

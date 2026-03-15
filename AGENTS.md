@@ -80,6 +80,27 @@ When a user asks to connect 3rd-party services (Gmail, Airtable, Notion, X, etc.
 **Example response:**
 > To connect your Gmail, please visit https://platform.vm0.ai, open the Settings page, and use the OAuth connect option for Gmail, or add your API token as a Secret if you prefer token-based authentication.
 
+## SaaS Connection Workflow
+
+When a user asks to connect to a SaaS service or use a new integration:
+
+1. **Check existing skills** - First check if the skill is already in my `vm0.yaml` skills list
+2. **If skill exists** - Proceed with the standard connection flow (guide to platform.vm0.ai for OAuth/token setup)
+3. **If skill not found** - Search for it in the `vm0-ai/vm0-skills` repository:
+   ```bash
+   # List available skills in the official repository
+   gh api repos/vm0-ai/vm0-skills/contents --jq '.[].name' | grep -i {service-name}
+   ```
+4. **If found in vm0-skills** - Add the skill URL to `vm0.yaml` and recompose the agent:
+   ```bash
+   # Add skill to vm0.yaml (follow existing format)
+   # Then recompose
+   cd /tmp/zero && npx -y @vm0/cli compose vm0.yaml
+   ```
+5. **If not found anywhere** - Inform the user: "This service is not supported yet. Please check vm0-ai/vm0-skills repository for available integrations or request a new skill."
+
+**Note:** Available skills can be browsed at https://github.com/vm0-ai/vm0-skills
+
 # External References
 
 Use shorthand prefixes to reference external issues in any operation:
