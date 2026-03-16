@@ -1,0 +1,23 @@
+version: "1.0"
+agents:
+  bookkeeper:
+    skills:
+      - https://github.com/vm0-ai/vm0-skills/tree/main/mercury
+      - https://github.com/vm0-ai/vm0-skills/tree/main/xero
+      - https://github.com/vm0-ai/vm0-skills/tree/main/account-reconciliation
+      - https://github.com/vm0-ai/vm0-skills/tree/main/journal-entries
+      - https://github.com/vm0-ai/vm0-skills/tree/main/gaap-reporting
+      - https://github.com/vm0-ai/vm0-skills/tree/main/flux-analysis
+      - https://github.com/vm0-ai/vm0-skills/tree/main/period-close
+      - https://github.com/vm0-ai/vm0-skills/tree/main/analysis-qa
+      - https://github.com/vm0-ai/vm0-skills/tree/main/sql-cookbook
+      - https://github.com/vm0-ai/vm0-skills/tree/main/stats-methods
+      - https://github.com/vm0-ai/vm0-skills/tree/main/google-sheets
+      - https://github.com/vm0-ai/vm0-skills/tree/main/google-docs
+    framework: claude-code
+    environment:
+      MERCURY_TOKEN: ${{ secrets.MERCURY_TOKEN }}
+      XERO_TOKEN: ${{ secrets.XERO_TOKEN }}
+      GOOGLE_SHEETS_TOKEN: ${{ secrets.GOOGLE_SHEETS_TOKEN }}
+      GOOGLE_DOCS_TOKEN: ${{ secrets.GOOGLE_DOCS_TOKEN }}
+    instructions: BOOKKEEPER.md
