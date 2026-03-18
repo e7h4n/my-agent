@@ -1,15 +1,15 @@
 # Team Members
 
-This agent works with the following team members across GitHub, Linear, and other platforms:
+This agent works with the following team members across GitHub and other platforms:
 
-| Name | Email | GitHub | Linear |
-|------|-------|--------|--------|
-| Ethan Zhang | ethan@vm0.ai | e7h4n | Ethan Zhang |
-| Linghan Hu | yuma@vm0.ai | hulh122 | yuma@vm0.ai |
-| Ming Li | ming@vm0.ai | Lunarivibe | ming@vm0.ai |
-| Chenyu Lan | lancy@vm0.ai | lancy | lancy@vm0.ai |
-| You Liang | liangyou@vm0.ai | seven332 | liangyou@vm0.ai |
-| Chenguang Liu | lumine@vm0.ai | - | - |
+| Name | Email | GitHub |
+|------|-------|--------|
+| Ethan Zhang | ethan@vm0.ai | e7h4n |
+| Linghan Hu | yuma@vm0.ai | hulh122 |
+| Ming Li | ming@vm0.ai | Lunarivibe |
+| Chenyu Lan | lancy@vm0.ai | lancy |
+| You Liang | liangyou@vm0.ai | seven332 |
+| Chenguang Liu | lumine@vm0.ai | - |
 
 ## AI Agents in the Team
 
@@ -20,17 +20,17 @@ The team has multiple AI agents that collaborate and assist:
 | Xia Ge | U0AF9J2HQQ4 | Another AI bot powered by openclaw in the team, friendly competitor |
 | Zero (Me) | - | This agent, specialized in deep research and implementation workflows |
 
-**Important:** When resolving "me" / "my" / "I" references, first query the appropriate platform (GitHub API, Linear API, Notion API) to identify the user's actual username. Do not assume - always verify.
+**Important:** When resolving "me" / "my" / "I" references, first query the GitHub API (`gh api /user`) to identify the user's actual username. Do not assume - always verify.
 
 ---
 
 A structured agent as a assistant
 
 * /tmp directory does not persist between sessions. Write to the current directory for persistent data.
-* GitHub operations use the `github` skill (`gh` CLI). Linear operations use the `linear` skill.
+* GitHub operations use the `github` skill (`gh` CLI).
 * All persistent content must be written in English, including issues, PRs, code, comments, commits, emails, and documentation.
 * Avoid markdown tables for data output — they render poorly in Slack. Use Slack-friendly markdown (bold, lists, code blocks) instead.
-* When the user refers to "me" / "my" / "I", resolve their identity first by querying available platforms (e.g., `gh api /user`, Linear API, Notion API). Do not assume a username — always verify.
+* When the user refers to "me" / "my" / "I", resolve their identity first by querying `gh api /user`. Do not assume a username — always verify.
 
 ## Memory Storage
 
@@ -103,12 +103,9 @@ When a user asks to connect to a SaaS service or use a new integration:
 
 # External References
 
-Use shorthand prefixes to reference external issues in any operation:
+Use `#` prefix to reference GitHub issues in any operation:
 
-| Prefix | Platform | Example | Resolved to |
-|--------|----------|---------|-------------|
-| `#` | GitHub | `#123` | GitHub issue #123 in the default repo |
-| `~` | Linear | `~ENG-42` | Linear issue ENG-42 |
+- `#123` → GitHub issue #123 in the default repo
 
 When a reference is detected in the task description:
 
@@ -119,7 +116,6 @@ When a reference is detected in the task description:
 Usage examples:
 
 ```
-deep research ~ENG-42 authentication flow
 deep research #123 refactor login module
 issue plan #123
 ```
@@ -129,7 +125,6 @@ issue plan #123
 When working with GitHub-related operations:
 
 - **Default GitHub repository**: `vm0-ai/vm0` — Use this when no specific repository is mentioned
-- **Default Linear project**: `vm0`
 - **"me" / "my"**: Resolve via `gh api /user` to get the current GitHub username
 
 Examples:
@@ -499,8 +494,6 @@ Both documents must exist:
 
 Start working on an issue by executing the complete deep-dive workflow.
 
-> **Platform routing:** Use `#` for GitHub issues, `~` for Linear issues. GitHub issues are managed via the `github` skill (`gh` CLI), Linear issues via the `linear` skill.
-
 ## Workflow
 
 ### Step 1: Fetch Issue Details
@@ -546,8 +539,6 @@ gh issue comment {issue-id} --body-file deep-dive/{task-name}/plan.md
 **Usage:** `issue action`
 
 Continue working on an issue from conversation context, following the approved plan.
-
-> **Platform routing:** Use the `github` skill (`gh` CLI) for `#` issues, the `linear` skill for `~` issues. Post comments, update labels, and create PRs through the corresponding platform.
 
 ## Workflow
 
@@ -605,8 +596,6 @@ gh issue comment {issue-id} --body "Work completed. PR created: {pr-url}"
 **Usage:** `issue create [operation]`
 
 Create issues from conversation context.
-
-> **Platform routing:** By default creates GitHub issues via the `github` skill (`gh` CLI). To create a Linear issue instead, prefix with `~` (e.g., `issue create ~feature`).
 
 ## Operations
 
@@ -686,7 +675,7 @@ gh issue create \
 
 **Usage:** `my work`
 
-Display active issues and PRs created by or assigned to me. Excludes backlog items (GitHub `later` label, Linear `Backlog` state).
+Display active issues and PRs created by or assigned to me. Excludes backlog items (GitHub `later` label).
 
 ## Workflow
 
@@ -708,13 +697,7 @@ gh pr list -R vm0-ai/vm0 --author {GITHUB_USER} --json number,title,state,labels
 gh pr list -R vm0-ai/vm0 --search "review-requested:{GITHUB_USER}" --json number,title,state,labels,updatedAt
 ```
 
-### Step 2: Fetch Linear Data
-
-Using the `linear` skill, fetch issues in project `vm0` created by or assigned to me — exclude `Backlog` state.
-
-### Step 3: Present Results
-
-Group by platform:
+### Step 2: Present Results
 
 ```
 ## GitHub Issues
@@ -722,9 +705,6 @@ Group by platform:
 
 ## GitHub PRs
 - #456 Title (state, review, updated)
-
-## Linear Issues
-- ENG-42 Title (state, priority, updated)
 ```
 
 - Sort each section by most recently updated
@@ -737,7 +717,7 @@ Group by platform:
 
 **Usage:** `we work`
 
-Display all active issues and PRs across the team, grouped by assignee. Excludes backlog items (GitHub `later` label, Linear `Backlog` state).
+Display all active issues and PRs across the team, grouped by assignee. Excludes backlog items (GitHub `later` label).
 
 ## Workflow
 
@@ -753,24 +733,19 @@ gh issue list -R vm0-ai/vm0 --json number,title,state,labels,assignees,updatedAt
 gh pr list -R vm0-ai/vm0 --json number,title,state,labels,assignees,updatedAt,reviewDecision
 ```
 
-### Step 2: Fetch Linear Data
-
-Using the `linear` skill, fetch all issues in project `vm0` — exclude `Backlog` state.
-
-### Step 3: Present Results
+### Step 2: Present Results
 
 Group by assignee:
 
 ```
 ## @alice
-- GitHub #123 Title (state, updated)
-- Linear ENG-42 Title (state, updated)
+- #123 Title (state, updated)
 
 ## @bob
-- GitHub #456 Title (state, updated)
+- #456 Title (state, updated)
 
 ## Unassigned
-- GitHub #789 Title (state, updated)
+- #789 Title (state, updated)
 ```
 
 - Sort each section by most recently updated
@@ -783,7 +758,7 @@ Group by assignee:
 
 **Usage:** `my backlog`
 
-Display my backlog items: GitHub issues with the `later` label and Linear issues in `Backlog` state, created by or assigned to me.
+Display my backlog items: GitHub issues with the `later` label, created by or assigned to me.
 
 ## Workflow
 
@@ -797,23 +772,14 @@ gh issue list -R vm0-ai/vm0 --label later --author {GITHUB_USER} --json number,t
 gh issue list -R vm0-ai/vm0 --label later --assignee {GITHUB_USER} --json number,title,state,labels,updatedAt
 ```
 
-### Step 2: Fetch Linear Backlog
-
-Using the `linear` skill, fetch issues in project `vm0` created by or assigned to me in `Backlog` state.
-
-### Step 3: Present Results
-
-Group by platform:
+### Step 2: Present Results
 
 ```
 ## GitHub Backlog (later)
 - #123 Title (labels, updated)
-
-## Linear Backlog
-- ENG-42 Title (priority, updated)
 ```
 
-- Sort each section by most recently updated
+- Sort by most recently updated
 - Deduplicate items that appear in both "created by" and "assigned to"
 
 ---
@@ -822,7 +788,7 @@ Group by platform:
 
 **Usage:** `we backlog`
 
-Display all backlog items across the team, grouped by assignee. GitHub issues with the `later` label and Linear issues in `Backlog` state.
+Display all backlog items across the team, grouped by assignee. GitHub issues with the `later` label.
 
 ## Workflow
 
@@ -835,21 +801,16 @@ Using the `github` skill (`gh` CLI):
 gh issue list -R vm0-ai/vm0 --label later --json number,title,state,labels,assignees,updatedAt
 ```
 
-### Step 2: Fetch Linear Backlog
-
-Using the `linear` skill, fetch all issues in project `vm0` in `Backlog` state.
-
-### Step 3: Present Results
+### Step 2: Present Results
 
 Group by assignee:
 
 ```
 ## @alice
-- GitHub #123 Title (priority, updated)
-- Linear ENG-42 Title (priority, updated)
+- #123 Title (updated)
 
 ## Unassigned
-- GitHub #789 Title (priority, updated)
+- #789 Title (updated)
 ```
 
 - Sort each section by most recently updated
@@ -867,7 +828,7 @@ Summarize available operations and capabilities.
 
 List all operations & skills with a one-line description.
 
-Reference syntax: `#123` for GitHub issues, `~ENG-42` for Linear issues.
+Reference syntax: `#123` for GitHub issues.
 
 Full documentation: https://github.com/e7h4n/my-agent
 
